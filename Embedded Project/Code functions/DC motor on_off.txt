@@ -1,0 +1,11 @@
+
+void DC_motor_on_off(){
+
+if(PORTD & 0x01) {  // Check if RD0 is pressed (bit 0 of PORTD)
+            PORTC = PORTC ^ 0x02;  // Toggle RC1 using XOR DC MOTOR ON/ OFF
+
+            while(PORTD & 0x01);  // Wait until the button is released
+        }
+
+
+}

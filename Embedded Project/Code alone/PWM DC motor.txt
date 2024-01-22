@@ -1,0 +1,45 @@
+void PWM_init();
+void updatePWM(unsigned int temperature);
+
+void main() {
+    char txt[7];
+    unsigned int temp;
+
+    TRISC = 0x02;
+    TRISA = 0x01;
+    TRISC1_bit = 0;  // Set RC1 as an output for PWM
+    PWM_init();
+    ATD_init_A0();
+
+    Lcd_Init();           // Initialize LCD
+    Lcd_Cmd(_LCD_CLEAR);  // Clear display
+    Lcd_Cmd(_LCD_CURSOR_OFF);
+
+    while (1) {
+        temp = ATD_read_A0();
+        displayTemperature(temp);
+        updatePWM(temp);
+        Delay_ms(1000);
+    }
+}
+
+void PWM_init() {
+    CCP2CON = 0x0C;   // PWM mode
+    PR2 = 249;        // Set PWM period (for a frequency of 1kHz)
+    T2CON = 0x04;     // TMR2 ON, Prescaler = 1
+}
+
+void updatePWM(unsigned int temperature) {
+    if (temperature <= 20)
+        CCPR2L = 0;  // 0% duty cycle
+    else if (temperature <= 28)
+        CCPR2L = 64;  // 25% duty cycle
+    else if (temperature <= 37)
+        CCPR2L = 128;  // 50% duty cycle
+    else if (temperature <= 46)
+        CCPR2L = 192;  // 75% duty cycle
+    else
+        CCPR2L = 255;  // 100% duty cycle
+}
+
+// ... (rest of the code remains unchanged)

@@ -1,0 +1,11 @@
+
+void flame_sensor(){
+if(PORTD & 0x20) {  //RD5 INPUT Flame senor.
+            PORTC = PORTC | 0x80; //RED LED ON.
+        }
+        else{
+        PORTC = PORTC & 0X7F;
+        
+        }
+
+}

@@ -1,0 +1,35 @@
+void main() {
+       TRISA = 0X01; //RA0 input
+       TRISB = 0X00; // Portb output
+       TRISC = 0X00; // PortC output
+       TRISD = 0XFF; // PortD input
+       TRISE = 0X00; // PortE output
+
+       PORTA = 0X00;
+       PORTB = 0X00;
+       PORTC = 0X00;
+       PORTD = 0X00;
+       PORTE = 0X00;
+
+       ADCON1 = 0X0E; // RA0 is Analog 
+       
+      CCP1CON = 0x0C;  // Configure CCP1 for PWM
+
+    T2CON = 0x07;
+    // Configure Timer2 for 50Hz PWM frequency with prescaler = 16
+
+
+ while (1) {
+        // Read input from RD3
+        if (PORTD & 0X08) {
+
+            CCPR1L = 0xFF;    // Adjust for servo 180-degree position
+        } else {
+            // RD0 is low, set pulse width for 0 degrees (neutral)
+            CCPR1L = 0x4F;    // Adjust for servo neutral position
+        }
+
+        // Delay for a short period to allow the servo to move
+        Delay_ms(40);
+    }
+}

@@ -1,0 +1,28 @@
+TRISD = 0XFF; // PortD input
+TRISC = 0X00; // PortC output
+PORTC = 0X00;
+
+ CCP1CON = 0x0C;  // Configure CCP1 for PWM
+
+    T2CON = 0x07;
+    // Configure Timer2 for 50Hz PWM frequency with prescaler = 16
+
+// on main.
+
+void IR_Servo(){
+// Read input from RD3
+        if (PORTD & 0X08) {
+
+            CCPR1L = 0xFF;    // Adjust for servo 180-degree position
+        } 
+         else {
+            // RD0 is low, set pulse width for 0 degrees (neutral)
+            CCPR1L = 0x4F;    // Adjust for servo neutral position
+        }
+
+        // Delay for a short period to allow the servo to move
+        Delay_ms(40);
+
+
+}
+

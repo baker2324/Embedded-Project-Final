@@ -1,0 +1,74 @@
+void PWM_init();
+void updatePWM(unsigned int temperature);
+ unsigned int ATD_read_A0();
+ void ATD_init_A0();
+ 
+ void displayTemperature(unsigned int adcValue);
+void main() {
+    char txt[7];
+    unsigned int temp;
+
+    TRISC = 0x02;
+    TRISA = 0x01;
+    TRISC1_bit = 0;  // Set RC1 as an output for PWM
+    PWM_init();
+
+
+
+
+    while (1) {
+        temp = ATD_read_A0();
+        displayTemperature(temp);
+        updatePWM(temp);
+        Delay_ms(1000);
+          }
+}
+
+void PWM_init() {
+    CCP2CON = 0x0C;   // PWM mode
+    PR2 = 249;        // Set PWM period (for a frequency of 1kHz)
+    T2CON = 0x04;     // TMR2 ON, Prescaler = 1
+}
+
+void updatePWM(unsigned int temperature) {
+    if (temperature <= 20)
+        CCPR2L = 0;  // 0% duty cycle
+
+    else if (21 <= temperature <= 28)
+        CCPR2L = 64;  // 25% duty cycle
+
+    else if (29 <= temperature <= 37)
+        CCPR2L = 128;  // 50% duty cycle
+
+    else if (38 <=temperature <= 46)
+        CCPR2L = 192;  // 75% duty cycle
+    else
+        CCPR2L = 255;  // 100% duty cycle
+}
+
+// ... (rest of the code remains unchanged)
+
+void ATD_init_A0();
+unsigned int ATD_read_A0();
+
+void ATD_init_A0(){
+   ADCON0 = 0x41;// ATD ON, Don't GO, CHannel 0, Fosc/16
+   ADCON1 = 0xCE;// All channels are Digital except RA0/AN0 is Analog
+   TRISA = 0x01;
+   PORTA = 0x00;
+ }
+
+unsigned int ATD_read_A0(){
+ADCON0 = ADCON0 | 0x04;
+while(ADCON0 & 0x04);
+return ((ADRESH<<8) | ADRESL);
+
+
+}
+
+
+void displayTemperature(unsigned int adcValue) {
+    float voltage = (adcValue * 5.0) / 1023.0;
+    float temperature = (voltage) * 100.0;  // LM35 output is 10 mV/°C
+    
+    }

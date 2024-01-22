@@ -1,0 +1,126 @@
+
+
+void DC_motor_on_off();
+void flame_sensor();
+void IR_Servo();
+void LDR();
+void LEDS_on_off();
+void Servo_on_off();
+
+
+
+void main() {
+       TRISA = 0X01; //RA0 input
+       TRISB = 0X00; // Portb output
+       TRISC = 0X00; // PortC output
+       TRISD = 0XFF; // PortD input
+       TRISE = 0X00; // PortE output
+
+       PORTA = 0X00;
+       PORTB = 0X00;
+       PORTC = 0X00;
+       PORTD = 0X00;
+       PORTE = 0X00;
+
+       ADCON1 = 0X0E; // RA0 is Analog
+
+       CCP1CON = 0x0C;  // Configure CCP1 for PWM
+
+       T2CON = 0x07;
+    // Configure Timer2 for 50Hz PWM frequency with prescaler = 16
+
+
+ while (1) {
+
+ IR_Servo();
+ LDR();
+ flame_sensor();
+ DC_motor_on_off();
+ LEDS_on_off();
+ Servo_on_off();
+
+}
+
+}
+
+void DC_motor_on_off(){
+
+if(PORTD & 0x01) {  // Check if RD0 is pressed (bit 0 of PORTD)
+            PORTC = PORTC ^ 0x02;  // Toggle RC1 using XOR DC MOTOR ON/ OFF
+
+            while(PORTD & 0x01);  // Wait until the button is released
+        }
+      }
+
+
+
+
+void flame_sensor(){
+if(!(PORTD & 0x20)) {  //RD5 INPUT Flame senor. work active low
+            PORTC = PORTC | 0x80; //RED LED ON.
+        }
+        else{
+        PORTC = PORTC & 0X7F;
+
+
+}
+}
+
+void IR_Servo(){
+// Read input from RD3
+        if (PORTD & 0X08) {
+
+            CCPR1L = 0xFF;    // Adjust for servo 180-degree position
+        }
+         else {
+            // RD0 is low, set pulse width for 0 degrees (neutral)
+            CCPR1L = 0x4F;    // Adjust for servo neutral position
+        }
+
+        // Delay for a short period to allow the servo to move
+        Delay_ms(40);
+
+
+}
+
+ void LDR(){
+ if(PORTD & 0x10) {  //RD4 INPUT PUSH BUTTON 3
+            PORTC = PORTC | 0x78; // LEDS ON PORTC ON/OFF
+            PORTA = PORTA | 0x1E; // LEDS ON PORTD ON/OFF
+
+        }
+        else {
+          PORTC = PORTC & 0X87;
+          PORTA = PORTA & 0X01;
+          }
+
+
+}
+
+
+void LEDS_on_off(){
+
+  if(PORTD & 0x04) {  //RD2 INPUT PUSH BUTTON 3
+            PORTC = PORTC ^ 0x78; // LEDS ON PORTC ON/OFF
+            PORTA = PORTA ^ 0x1E; // LEDS ON PORTD ON/OFF
+
+            while(PORTD & 0x04);
+        }
+
+
+
+}
+
+
+void Servo_on_off(){
+
+ if(PORTD & 0x02) {  // Check if RD1 is pressed (bit 1 of PORTD)
+            PORTC = PORTC ^ 0x04;  // Toggle RC2 using XOR Servo MOTOR ON/ OFF
+
+            while(PORTD & 0x02);  // Wait until the button is released
+        }
+
+
+
+}
+

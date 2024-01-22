@@ -1,0 +1,30 @@
+void main() {
+       TRISA = 0X01; //RA0 input
+       TRISB = 0X00; // Portb output
+       TRISC = 0X00; // PortC output
+       TRISD = 0XFF; // PortD input
+       TRISE = 0X00; // PortE output
+
+       PORTA = 0X00;
+       PORTB = 0X00;
+       PORTC = 0X00;
+       PORTD = 0X00;
+       PORTE = 0X00;
+
+       ADCON1 = 0X0E;
+       
+
+
+
+
+
+    while(1) {  // Forever loop
+        if(PORTD & 0x20) {  //RD5 INPUT Flame senor.
+            PORTC = PORTC | 0x80; //RED LED ON.
+        }
+        else{
+        PORTC = PORTC & 0X7F;
+        
+        }
+    }
+}

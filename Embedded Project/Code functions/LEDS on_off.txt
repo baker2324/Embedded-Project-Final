@@ -1,0 +1,15 @@
+
+
+
+void LEDS_on_off(){
+
+  if(PORTD & 0x04) {  //RD2 INPUT PUSH BUTTON 3
+            PORTC = PORTC ^ 0x78; // LEDS ON PORTC ON/OFF
+            PORTA = PORTA ^ 0x1E; // LEDS ON PORTD ON/OFF
+
+            while(PORTD & 0x04);
+        }
+
+
+
+}

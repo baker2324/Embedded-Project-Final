@@ -1,0 +1,16 @@
+void ATD_init_A0();
+unsigned int ATD_read_A0();
+
+void ATD_init_A0(){
+   ADCON0 = 0x41;// ATD ON, Don't GO, CHannel 0, Fosc/16
+   ADCON1 = 0xCE;// All channels are Digital except RA0/AN0 is Analog
+   TRISA = 0x01;
+   PORTA = 0x00;
+ }
+
+unsigned int ATD_read_A0(){
+ADCON0 = ADCON0 | 0x04;
+while(ADCON0 & 0x04);
+return ((ADRESH<<8) | ADRESL);
+
+}

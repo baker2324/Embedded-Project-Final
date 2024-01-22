@@ -1,0 +1,13 @@
+
+
+void Servo_on_off(){
+
+ if(PORTD & 0x02) {  // Check if RD1 is pressed (bit 1 of PORTD)
+            PORTC = PORTC ^ 0x04;  // Toggle RC2 using XOR Servo MOTOR ON/ OFF
+
+            while(PORTD & 0x02);  // Wait until the button is released
+        }
+
+
+
+}

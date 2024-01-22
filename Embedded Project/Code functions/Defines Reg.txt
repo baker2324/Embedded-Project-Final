@@ -1,0 +1,19 @@
+TRISA = 0X01; //RA0 input
+       TRISB = 0X00; // Portb output
+       TRISC = 0X00; // PortC output
+       TRISD = 0XFF; // PortD input
+       TRISE = 0X00; // PortE output
+       
+       PORTA = 0X00;
+       PORTB = 0X00;
+       PORTC = 0X00;
+       PORTD = 0X00;
+       PORTE = 0X00;
+
+ ADCON1 = 0X0E; // RA0 is Analog 
+       
+      CCP1CON = 0x0C;  // Configure CCP1 for PWM
+
+    T2CON = 0x07;
+    // Configure Timer2 for 50Hz PWM frequency with prescaler = 16
+       

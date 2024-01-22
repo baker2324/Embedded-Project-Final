@@ -1,0 +1,14 @@
+
+void LDR(){
+ if(PORTD & 0x10) {  //RD4 INPUT PUSH BUTTON 3
+            PORTC = PORTC | 0x78; // LEDS ON PORTC ON/OFF
+            PORTA = PORTA | 0x1E; // LEDS ON PORTD ON/OFF
+
+        }
+        else {
+          PORTC = PORTC & 0X87;
+          PORTA = PORTA & 0X01;
+          }
+
+
+}
